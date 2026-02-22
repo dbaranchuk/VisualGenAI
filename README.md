@@ -9,11 +9,11 @@
 
 In this course, we study dominating generative paradigms for visual domains: images, videos, 3D, etc. The main focus is on diffusion models: their different theoretical interpretations, as well as advanced training and sampling methods that ensure high quality and fast generation. Also, special attention is given to few-step diffusion-based generative models, which are widely used today in production services for image and video generation. The course also explores recent advances in autoregressive visual generation and their effective integration with diffusion-based approaches.
 
-##### Goals 
+#### Goals 
 
-* Develop a deep understanding of leading generative paradigms
+* Develop a deep understanding of leading visual generative paradigms
 * Learn about novel effective generative frameworks
-* Master most recent architectures, training and sampling techniques for state-of-the-art generative approaches
+* Master most recent practical techniques for state-of-the-art generative approaches
 
 <hr>
 
