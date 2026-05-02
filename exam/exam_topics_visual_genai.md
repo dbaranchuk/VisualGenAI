@@ -1,5 +1,5 @@
 ---
-title: Visual GenAI | Exam Topics
+# Visual GenAI | Exam Topics
 
 ---
 
