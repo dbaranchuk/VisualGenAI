@@ -1,0 +1,5 @@
+node_modules/
+bookings.json
+bookings.json.tmp
+.env
+.DS_Store

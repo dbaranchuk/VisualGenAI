@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VisualGenAI · Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/styles.css" />
+  <style>
+    .admin-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    .admin-table th, .admin-table td {
+      padding: 10px 12px; text-align: left;
+      border-bottom: 1px solid var(--line-soft);
+    }
+    .admin-table th {
+      color: var(--text-mute); font-weight: 600; font-size: 11px;
+      letter-spacing: 0.04em; text-transform: uppercase;
+    }
+    .admin-table td.mono { font-family: var(--font-mono); font-size: 13px; }
+    .admin-table tr:hover td { background: rgba(255,255,255,0.02); }
+    .del-btn {
+      padding: 5px 10px; border-radius: 6px; cursor: pointer;
+      background: transparent; color: var(--danger);
+      border: 1px solid rgba(248, 113, 113, 0.3);
+      font-family: inherit; font-size: 12px;
+      transition: all 0.15s;
+    }
+    .del-btn:hover { background: rgba(248, 113, 113, 0.08); border-color: var(--danger); }
+    .empty-row td { text-align: center; color: var(--text-mute); padding: 30px; font-style: italic; }
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 10px;
+      margin-bottom: 22px;
+    }
+    .stat {
+      padding: 14px;
+      background: var(--bg-soft);
+      border: 1px solid var(--line-soft);
+      border-radius: var(--radius-sm);
+    }
+    .stat-num {
+      font-family: var(--font-mono);
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+    .stat-label {
+      font-size: 11px;
+      color: var(--text-mute);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-top: 2px;
+    }
+    .auth-form {
+      max-width: 380px;
+    }
+    code {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      padding: 1px 6px;
+      background: var(--bg-soft);
+      border-radius: 4px;
+      border: 1px solid var(--line-soft);
+    }
+    .q-form {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+    @media (max-width: 720px) {
+      .q-form { grid-template-columns: 1fr; }
+    }
+    .q-card {
+      padding: 14px;
+      background: var(--bg-soft);
+      border: 1px solid var(--line-soft);
+      border-radius: var(--radius-sm);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .q-card h3 {
+      margin: 0 0 4px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-mute);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .q-card .input { padding: 9px 12px; font-size: 14px; }
+    .q-card label { font-size: 11px; color: var(--text-mute); margin-bottom: -3px; }
+  </style>
+</head>
+<body>
+  <div class="bg-glow" aria-hidden="true"></div>
+
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="kicker"><span class="dot"></span><span>VisualGenAI · Admin</span></div>
+      <h1>All bookings</h1>
+      <p class="lede">Organizer view. Open with <code>?token=…</code> or paste it below.</p>
+    </div>
+  </header>
+
+  <main class="container">
+    <section id="auth-card" class="card auth-form" style="display:none">
+      <label class="label" for="token">Admin token</label>
+      <input id="token" class="input" type="password" placeholder="Paste token" autocomplete="off" />
+      <div class="actions" style="margin-top:14px;padding-top:0;border-top:0">
+        <button id="auth-btn" class="btn-primary">Load bookings</button>
+        <span id="auth-status" class="status"></span>
+      </div>
+    </section>
+
+    <section id="admin-card" class="card" style="display:none">
+      <div class="schedule-head">
+        <h2>Queue configuration</h2>
+        <button id="save-queues" class="btn-primary" style="padding:8px 14px;font-size:13px">Save queues</button>
+      </div>
+      <p style="margin:0 0 14px;color:var(--text-dim);font-size:13px">
+        Set an interviewer name and a Zoom link for each queue. Students see these on the booking page.
+      </p>
+      <div class="q-form" id="q-form"></div>
+      <p id="q-status" class="status" style="margin-top:10px"></p>
+
+      <div class="stats" style="margin-top:30px">
+        <div class="stat"><div class="stat-num" id="stat-students">0</div><div class="stat-label">Students booked</div></div>
+        <div class="stat"><div class="stat-num" id="stat-defend">0</div><div class="stat-label">Defend · 20m</div></div>
+        <div class="stat"><div class="stat-num" id="stat-upgrade">0</div><div class="stat-label">Upgrade · 40m</div></div>
+        <div class="stat"><div class="stat-num" id="stat-capacity">0/36</div><div class="stat-label">Capacity used</div></div>
+        <div class="stat"><div class="stat-num" id="stat-full">0</div><div class="stat-label">Full (queue,slot) cells</div></div>
+      </div>
+
+      <div class="schedule-head">
+        <h2>By time</h2>
+        <button id="refresh" class="btn-ghost" type="button">Refresh</button>
+      </div>
+      <table class="admin-table">
+        <thead>
+          <tr><th>Time</th><th>Queue</th><th>Student</th><th>Type</th><th>Booked at</th><th></th></tr>
+        </thead>
+        <tbody id="rows"></tbody>
+      </table>
+
+      <div class="schedule-head" style="margin-top:32px">
+        <h2>By student</h2>
+      </div>
+      <ul id="by-student" style="list-style:none;padding:0;margin:0;display:grid;gap:6px"></ul>
+
+      <p id="error" class="status error" style="margin-top: 16px;"></p>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <a href="/" style="color:var(--text-dim);text-decoration:none">← Back to booking page</a>
+  </footer>
+
+  <script>
+    const $ = (s) => document.querySelector(s);
+    const params = new URLSearchParams(location.search);
+    let token = params.get('token') || sessionStorage.getItem('vg-admin-token') || '';
+
+    function fmtTime(idx) {
+      const t = 18 * 60 + idx * 20;
+      const h = Math.floor(t / 60);
+      const m = t % 60;
+      return String(h).padStart(2,'0') + ':' + String(m).padStart(2,'0');
+    }
+    function fmtRange(start, dur) {
+      return fmtTime(start) + ' – ' + fmtTime(start + dur);
+    }
+    function escapeHtml(s) {
+      return String(s).replace(/[&<>"']/g, c => ({
+        '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+      }[c]));
+    }
+
+    async function load() {
+      $('#error').textContent = '';
+      try {
+        const r = await fetch('/api/admin/bookings', {
+          headers: { 'X-Admin-Token': token },
+          cache: 'no-store'
+        });
+        if (r.status === 403) {
+          showAuth('Invalid token.');
+          return;
+        }
+        if (!r.ok) throw new Error('Failed to load.');
+        const data = await r.json();
+        sessionStorage.setItem('vg-admin-token', token);
+        $('#auth-card').style.display = 'none';
+        $('#admin-card').style.display = 'block';
+        renderQueueForm(data.queues || []);
+        render(data.bookings || [], data.queues || []);
+      } catch (e) {
+        $('#error').textContent = e.message || 'Network error.';
+      }
+    }
+
+    function renderQueueForm(queues) {
+      const form = $('#q-form');
+      form.innerHTML = '';
+      for (let i = 0; i < 3; i++) {
+        const q = queues[i] || { interviewer: '', zoom: '' };
+        const card = document.createElement('div');
+        card.className = 'q-card';
+        card.innerHTML = `
+          <h3>Queue ${i + 1}</h3>
+          <label>Interviewer name</label>
+          <input class="input" type="text" data-qi="${i}" data-field="interviewer"
+                 placeholder="e.g. Dmitry Baranchuk" value="${escapeHtml(q.interviewer || '')}" maxlength="120" />
+          <label>Zoom link</label>
+          <input class="input" type="text" data-qi="${i}" data-field="zoom"
+                 placeholder="https://us02web.zoom.us/j/..." value="${escapeHtml(q.zoom || '')}" maxlength="500" />
+        `;
+        form.appendChild(card);
+      }
+    }
+
+    async function saveQueues() {
+      const queues = [];
+      for (let i = 0; i < 3; i++) {
+        const interviewer = document.querySelector(`input[data-qi="${i}"][data-field="interviewer"]`).value;
+        const zoom = document.querySelector(`input[data-qi="${i}"][data-field="zoom"]`).value;
+        queues.push({ interviewer, zoom });
+      }
+      $('#q-status').textContent = 'Saving…';
+      $('#q-status').className = 'status';
+      try {
+        const r = await fetch('/api/admin/queues', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'X-Admin-Token': token },
+          body: JSON.stringify({ queues })
+        });
+        const data = await r.json();
+        if (!r.ok) throw new Error(data.error || 'Save failed.');
+        $('#q-status').textContent = 'Saved. Students will see updated info on next refresh.';
+        $('#q-status').className = 'status success';
+        load();
+      } catch (e) {
+        $('#q-status').textContent = e.message;
+        $('#q-status').className = 'status error';
+      }
+    }
+
+    function showAuth(msg) {
+      $('#auth-card').style.display = 'block';
+      $('#admin-card').style.display = 'none';
+      $('#auth-status').textContent = msg || '';
+      $('#auth-status').className = 'status' + (msg ? ' error' : '');
+    }
+
+    function render(bookings, queues) {
+      const TOTAL_CELLS = 12;
+      const QUEUES = 3;
+      const sorted = [...bookings].sort((a, b) =>
+        a.start - b.start || (a.queue ?? 0) - (b.queue ?? 0)
+      );
+      // queue×cell occupancy
+      const grid = Array.from({ length: QUEUES }, () => new Array(TOTAL_CELLS).fill(null));
+      const byStudent = new Map();
+      let defendCount = 0, upgradeCount = 0, capacity = 0;
+      for (const b of bookings) {
+        const qi = b.queue ?? 0;
+        for (let i = 0; i < b.duration; i++) {
+          const c = b.start + i;
+          if (c >= 0 && c < TOTAL_CELLS && qi >= 0 && qi < QUEUES) grid[qi][c] = b;
+        }
+        capacity += b.duration;
+        const list = byStudent.get(b.name) || [];
+        list.push(b);
+        byStudent.set(b.name, list);
+        if (b.type === 'upgrade') upgradeCount++;
+        else defendCount++;
+      }
+      let fullPairs = 0;
+      for (let q = 0; q < QUEUES; q++) {
+        for (let c = 0; c < TOTAL_CELLS; c++) if (grid[q][c]) fullPairs++;
+      }
+
+      $('#stat-students').textContent = byStudent.size;
+      $('#stat-defend').textContent = defendCount;
+      $('#stat-upgrade').textContent = upgradeCount;
+      $('#stat-capacity').textContent = capacity + '/' + (TOTAL_CELLS * QUEUES);
+      $('#stat-full').textContent = fullPairs;
+
+      const tbody = $('#rows');
+      tbody.innerHTML = '';
+      if (sorted.length === 0) {
+        tbody.innerHTML = '<tr class="empty-row"><td colspan="6">No bookings yet.</td></tr>';
+      } else {
+        for (const b of sorted) {
+          const tagClass = b.type === 'upgrade' ? 'upgrade' : 'defend';
+          const tagText = b.type === 'upgrade' ? 'upgrade · 40m' : 'defend · 20m';
+          const created = b.created_at ? new Date(b.created_at).toLocaleString() : '—';
+          const qi = b.queue ?? 0;
+          const interviewer = (queues[qi] && queues[qi].interviewer) || '';
+          const queueLabel = interviewer
+            ? `Q${qi + 1} · ${escapeHtml(interviewer)}`
+            : `Q${qi + 1}`;
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td class="mono">${fmtRange(b.start, b.duration)}</td>
+            <td><span class="sched-tag" style="font-size:11px">${queueLabel}</span></td>
+            <td>${escapeHtml(b.name)}</td>
+            <td><span class="sched-tag ${tagClass}">${tagText}</span></td>
+            <td class="mono" style="color:var(--text-mute);font-size:12px">${escapeHtml(created)}</td>
+            <td><button class="del-btn" data-id="${escapeHtml(b.id)}">Delete</button></td>
+          `;
+          tbody.appendChild(tr);
+        }
+      }
+
+      const list = $('#by-student');
+      list.innerHTML = '';
+      const studentEntries = [...byStudent.entries()].sort((a, b) => a[0].localeCompare(b[0]));
+      for (const [name, picks] of studentEntries) {
+        const sortedPicks = picks.slice().sort((a, b) => a.start - b.start);
+        const detail = sortedPicks
+          .map(p => `Q${(p.queue ?? 0) + 1} ${fmtRange(p.start, p.duration)}`)
+          .join(', ');
+        const types = [...new Set(picks.map(p => p.type))]
+          .map(t => t === 'upgrade' ? '40m' : '20m')
+          .join(' / ');
+        const li = document.createElement('li');
+        li.style.cssText = 'display:flex;justify-content:space-between;align-items:center;padding:9px 14px;border:1px solid var(--line-soft);border-radius:8px;background:var(--bg-soft);font-size:14px';
+        li.innerHTML = `
+          <span><strong>${escapeHtml(name)}</strong> <span style="color:var(--text-mute);font-size:12px;margin-left:8px">${types}</span></span>
+          <span class="picks" style="font-family:var(--font-mono);font-size:12px;color:var(--text-dim)">${detail}</span>
+        `;
+        list.appendChild(li);
+      }
+
+      tbody.querySelectorAll('.del-btn').forEach(btn => {
+        btn.addEventListener('click', () => del(btn.dataset.id));
+      });
+    }
+
+    async function del(id) {
+      if (!confirm('Delete this booking?')) return;
+      const r = await fetch('/api/bookings/' + encodeURIComponent(id), {
+        method: 'DELETE',
+        headers: { 'X-Admin-Token': token }
+      });
+      if (!r.ok) {
+        const data = await r.json().catch(() => ({}));
+        $('#error').textContent = data.error || 'Delete failed.';
+        return;
+      }
+      load();
+    }
+
+    $('#auth-btn').addEventListener('click', () => {
+      token = $('#token').value.trim();
+      if (token) load();
+    });
+    $('#token').addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') $('#auth-btn').click();
+    });
+    $('#refresh').addEventListener('click', load);
+    $('#save-queues').addEventListener('click', saveQueues);
+
+    if (token) load();
+    else showAuth();
+  </script>
+</body>
+</html>

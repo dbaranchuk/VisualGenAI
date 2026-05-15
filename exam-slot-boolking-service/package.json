@@ -1,0 +1,13 @@
+{
+  "name": "visualgenai-exam-booking",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Exam timeslot booking for the VisualGenAI course (zero-dependency Node server)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=14"
+  }
+}
