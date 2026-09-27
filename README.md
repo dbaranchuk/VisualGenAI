@@ -58,6 +58,7 @@ Each lecture comes with English slides (`.pdf` in this repo) and a recorded lect
 
 ## Research Seminars on Diffusion Models
 
+* [Seminar recording archive (2023–2026)](research_seminars/diffusion_research_seminars_09_2026.pdf) — English guide; Zoom recordings in Russian.
 * [Seminar slides](research_seminars/slides/)
 * [Research seminar Telegram group](https://t.me/+gE2ERaknHecyMjZi)
 
