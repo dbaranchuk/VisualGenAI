@@ -26,6 +26,7 @@ advances in **autoregressive** visual generation and its integration with diffus
 ## Contents
 
 * [Syllabus](#syllabus)
+* [Research Seminars on Diffusion Models](#research-seminars-on-diffusion-models)
 * [Assignments](#assignments)
 * [Exam](#exam)
 * [Contacts](#contacts)
@@ -52,6 +53,13 @@ Each lecture comes with English slides (`.pdf` in this repo) and a recorded lect
 | 10 | **Efficient Diffusion Models** — model-level optimizations (caching, sparse attention, quantization, …) | [Slides](week8_video_diffusion_and_efficient_genai/video_generation_and_efficient_genai_lecture.pdf) · [Lecture (RU)](https://disk.yandex.ru/i/ITGNF6ukuy1ufQ) |
 | 11 | **Multimodal Generative Models** — architectures, training setups, and conditioning in diffusion (ControlNet, IP-Adapter) | [Slides](week9_multimodal_generation_and_conditioning/multimodal_generation_and_conditioning.pdf) · [Lecture (RU)](https://disk.yandex.ru/i/EVl_Y3fF0KL8SA) |
 | 12 | **3D Generative Models** — intro to 3D modeling and multi-view diffusion models | [Slides](week10_3d_generative_models/3d_generative_models_lecture.pdf) · [Lecture (RU)](https://disk.yandex.ru/i/kAUxkOnFmZxJmw) |
+
+<hr>
+
+## Research Seminars on Diffusion Models
+
+* [Seminar slides](research_seminars/slides/)
+* [Research seminar Telegram group](https://t.me/+gE2ERaknHecyMjZi)
 
 <hr>
 
