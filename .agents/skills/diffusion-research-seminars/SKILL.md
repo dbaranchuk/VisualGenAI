@@ -12,8 +12,9 @@ are in Russian.
 
 ## Locate the materials
 
-Find the VisualGenAI repository from the supplied path or current workspace. Read its
-README and applicable project instructions. Paths below are relative to that repository:
+Find the diffusion-course-and-seminars repository from the supplied path or current workspace. Read
+`research_seminars/README.md` and applicable project instructions. Do not assume a
+particular clone directory name. Paths below are relative to that repository:
 
 - `research_seminars/INDEX.md`: searchable seminar descriptions, dates, speaker names,
   recording links, source links, and PDF page references.
@@ -21,10 +22,11 @@ README and applicable project instructions. Paths below are relative to that rep
   for checking entries and retrieving recording access codes.
 - `research_seminars/slides/`: inspect the files currently available before promising
   a slide-based explanation. The September 2026 snapshot contains only a placeholder.
-- `README.md`: course prerequisites, archive links, and the seminar Telegram group.
+- `research_seminars/README.md`: archive links and the seminar Telegram group.
+- `visual_genai_course_2026/README.md`: course syllabus and foundational lectures.
 
 If no checkout is available, use the public repository at
-https://github.com/dbaranchuk/VisualGenAI or ask for the relevant entry. Use the
+https://github.com/dbaranchuk/diffusion-course-and-seminars or ask for the relevant entry. Use the
 available index before searching the wider web for talks. The archive covers
 2023–September 2026; do not infer that its last entry is the latest seminar held.
 
@@ -44,7 +46,7 @@ entry-level references until their association with a particular paper is verifi
 
 For a reading plan, use the reader's background and available time. Explain why each
 selected talk is relevant and put prerequisites before more specialized methods.
-Use the course syllabus in README when foundational diffusion material is needed.
+Use the course syllabus in `visual_genai_course_2026/README.md` when foundational diffusion material is needed.
 Identify a proposed learning order as your recommendation; archive order alone does
 not establish prerequisite relationships.
 

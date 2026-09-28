@@ -161,6 +161,6 @@
 
 # Materials
 
-- [Course Materials](https://github.com/dbaranchuk/VisualGenAI)
+- [Course Materials](../README.md)
 - [Tracing the Principles Behind Modern Diffusion Models](https://the-principles-of-diffusion-models.github.io/#/blog)
 - [FLUX.2 blogpost](https://bfl.ai/techblog/representation-comparison) about VAE latent spaces and timestep shifts

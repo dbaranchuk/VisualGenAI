@@ -12,8 +12,10 @@ Tiny self-hosted web app for students to claim a timeslot for the
 
 ## Run locally
 
+From the repository root:
+
 ```bash
-cd /home/dbaranchuk/exam-booking
+cd visual_genai_course_2026/exam/slot-booking-service
 node server.js
 # open http://localhost:3000
 ```
