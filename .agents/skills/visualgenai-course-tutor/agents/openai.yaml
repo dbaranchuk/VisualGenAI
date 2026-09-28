@@ -1,0 +1,6 @@
+interface:
+  display_name: "Visual GenAI Course Tutor"
+  short_description: "Navigate lectures, learn concepts, and practice"
+  default_prompt: "Use $visualgenai-course-tutor to help me study my current Visual GenAI topic and find the right practice materials."
+policy:
+  allow_implicit_invocation: true

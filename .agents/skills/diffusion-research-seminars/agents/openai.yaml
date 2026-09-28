@@ -1,0 +1,6 @@
+interface:
+  display_name: "Diffusion Research Seminars"
+  short_description: "Find talks, study papers, and prepare discussions"
+  default_prompt: "Use $diffusion-research-seminars to find talks on my research topic and prepare a reading guide with paper references."
+policy:
+  allow_implicit_invocation: true

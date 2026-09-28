@@ -26,6 +26,7 @@ advances in **autoregressive** visual generation and its integration with diffus
 ## Contents
 
 * [Syllabus](#syllabus)
+* [Study with the course tutor](#study-with-the-course-tutor)
 * [Research Seminars on Diffusion Models](#research-seminars-on-diffusion-models)
 * [Assignments](#assignments)
 * [Exam](#exam)
@@ -56,11 +57,80 @@ Each lecture comes with English slides (`.pdf` in this repo) and a recorded lect
 
 <hr>
 
+## Study with the course tutor
+
+The **Visual GenAI Course Tutor** skill helps you find lectures and prerequisites,
+understand equations, work through assignments, and prepare for the exam. It asks
+Codex to read the relevant course files and cite slide pages or notebook sections.
+You can ask questions in English or Russian.
+
+### Get started
+
+1. Clone this repository, or update your existing checkout, and open its root folder
+   in **Codex CLI or the Codex IDE extension**.
+2. The skill is included in
+   [`.agents/skills/visualgenai-course-tutor/`](.agents/skills/visualgenai-course-tutor/SKILL.md).
+   Codex discovers skills in this repository folder; no separate skill installation
+   is needed. See the [official skill documentation](https://learn.chatgpt.com/docs/build-skills).
+3. Type `$` and select `visualgenai-course-tutor`, or include its name in your prompt:
+
+```text
+$visualgenai-course-tutor
+Help me understand flow matching before HW3.
+I know DDPM, but velocity prediction is confusing.
+Use the course notation, show a small example, then quiz me.
+```
+
+If the skill does not appear, restart Codex after opening the repository.
+
+### What to ask
+
+| Goal | Example prompt after selecting the skill |
+|---|---|
+| Find prerequisites | “Which lectures and sections should I revisit before HW4?” |
+| Understand a derivation | “Explain the MeanFlow target in the slides, including the time convention.” |
+| Get homework help | “Read my attempt at this exercise and give me one hint at a time.” |
+| Debug an implementation | “Check the timestep direction and tensor shapes in my sampler; start with a small example.” |
+| Plan your study | “I have four hours this week. Plan reading and practice for flow matching.” |
+| Prepare for the exam | “Quiz me on the official exam topics, one question at a time, and give feedback.” |
+
+For homework, point to the exercise and show your attempt. The tutor is instructed
+to build on your work and leave solution notebooks unopened unless requested.
+Recording links help you find lectures; the skill has no built-in transcripts.
+
+<hr>
+
 ## Research Seminars on Diffusion Models
 
+* [Searchable seminar index](research_seminars/INDEX.md) — browse 151 entries by topic, paper title, speaker, or date.
 * [Seminar recording archive (2023–2026)](research_seminars/diffusion_research_seminars_09_2026.pdf) — English guide; Zoom recordings in Russian.
 * [Seminar slides](research_seminars/slides/)
 * [Research seminar Telegram group](https://t.me/+gE2ERaknHecyMjZi)
+
+### Research seminar assistant
+
+The [Diffusion Research Seminars skill](.agents/skills/diffusion-research-seminars/SKILL.md)
+helps you find relevant talks, plan prerequisite reading, compare papers, and prepare
+discussion questions. It is included in this repository and uses the same
+[Codex setup as the course tutor](#get-started). Select `$diffusion-research-seminars`:
+
+```text
+$diffusion-research-seminars
+Find seminars on diffusion language models and suggest a reading order.
+I know image diffusion but am new to text generation.
+Link the recordings and explain which papers I should read first.
+```
+
+Other examples:
+
+* “Find the seminar covering MeanFlow and prepare a reading guide from its paper.”
+* “Find the DMD and consistency-model talks, compare their objectives, and cite the papers.”
+* “Suggest discussion questions and possible follow-up experiments for this seminar.”
+
+The skill uses the archive to locate talks and reads linked papers for technical
+explanations. Claims about what a speaker said, and recording timestamps, require
+accessible recording content or transcripts. The current archive includes recording
+links and paper references; the slides folder is a placeholder.
 
 <hr>
 
